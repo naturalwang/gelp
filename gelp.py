@@ -12,7 +12,7 @@ __version__ = 1.0
 __author__ = 'ran'
 
 home_dir = os.path.expanduser('~')
-db_file = '.gelp.test.json'
+db_file = '.gelp.json'
 db_path = os.path.join(home_dir, db_file)
 
 gelp_dict = {}
@@ -81,9 +81,12 @@ class Color:
 
 
 def init() -> None:
-    if not os.path.exists(db_path):
+    path = db_path
+    if not os.path.exists(path):
+        path = './gelp.json'
+    if not os.path.exists(path):
         return
-    with open(db_path, 'r') as f:
+    with open(path, 'r') as f:
         content = f.read()
         try:
             gelp_dict.update(json.loads(content))
@@ -114,11 +117,11 @@ def print_gelp() -> None:
 def print_gelp_all() -> None:
     # log('gelp_dict', gelp_dict)
     for spoon, items in gelp_dict.items():
-        color_spoon = Color.light_cyan(spoon)
+        color_spoon = Color.light_cyan(f'[{spoon}]')
         item_texts = [GelpItem(**item).pretty_text() for item in items]
         # log('item_texts', item_texts)
         content = '\n'.join(item_texts)
-        log(f'{color_spoon}:')
+        log(color_spoon)
         log(f'{content}')
 
 
