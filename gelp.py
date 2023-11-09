@@ -127,9 +127,10 @@ def print_gelp_all() -> None:
 
 def save_gelp() -> None:
     spoon = sys.argv[1]
-    log(f'gelp action "{spoon}" saved')
+    # log(f'gelp action "{spoon}" saved')
     cmd = sys.argv[2]
-    desc = sys.argv[3]
+    desc = ' '.join(sys.argv[3:])
+
     item = GelpItem(cmd, desc)
     # log('item', asdict(item))
     gelp_dict[spoon] = gelp_dict.get(spoon, []) + [asdict(item)]
@@ -142,13 +143,13 @@ def __main() -> None:
     init()
     
     argc = len(sys.argv)
-    # log('sys.argv', sys.argv)
+    log('sys.argv', sys.argv, argc)
     if argc == 2:
         if sys.argv[1] == '-a':
             action = print_gelp_all
         else:
             action = print_gelp
-    elif argc == 3 or argc == 4:
+    elif argc == 3 or argc >= 4:
         action = save_gelp
     else:
         action = usage
